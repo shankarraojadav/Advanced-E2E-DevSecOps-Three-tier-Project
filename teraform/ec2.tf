@@ -6,9 +6,9 @@ module "ec2_instance" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.large"
   monitoring             = true
-  vpc_security_group_ids = aws_security_group.security-group.id
+  vpc_security_group_ids = [aws_security_group.security-group.id]
   key_name               = "jadhav_cred"
-  subnet_id              = module.vpc.public_subnets
+  subnet_id              = module.vpc.public_subnets[0]
   root_block_device = [
     {
       volume_size = 30
