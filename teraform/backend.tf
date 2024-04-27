@@ -20,7 +20,7 @@ terraform {
 
     key = "state/terraform.tfstate"
 
-    region = ""
+    region = "ap-south-1"
 
     encrypt = true
 
