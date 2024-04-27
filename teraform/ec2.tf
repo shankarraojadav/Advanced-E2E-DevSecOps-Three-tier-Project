@@ -9,6 +9,8 @@ module "ec2_instance" {
   vpc_security_group_ids = [aws_security_group.security-group.id]
   key_name               = "jadhav_cred"
   subnet_id              = module.vpc.public_subnets[0]
+
+  associate_public_ip_address = true
   root_block_device = [
     {
       volume_size = 30
@@ -25,13 +27,13 @@ module "ec2_instance" {
 
 
 resource "aws_security_group" "security-group" {
-  
+
   description = "Allowing Jenkins, Sonarqube, SSH Access"
 
   vpc_id = module.vpc.vpc_id
 
   ingress = [
-    for port in [22,443 , 8080, 9000, 9090, 80] : {
+    for port in [22, 443, 8080, 9000, 9090, 80] : {
       description      = "TLS from VPC"
       from_port        = port
       to_port          = port
