@@ -22,10 +22,11 @@ terraform {
 
     region = "ap-south-1"
 
-    encrypt = true
+    # encrypt = true
 
-    dynamodb_table = "Terraform_lock"
+    # dynamodb_table = "Terraform_lock"
 
   }
 
 }
+
