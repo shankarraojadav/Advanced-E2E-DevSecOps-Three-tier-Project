@@ -6,7 +6,7 @@ module "ec2_instance" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.large"
   monitoring             = true
-  vpc_security_group_ids = module.vote_service_sg.security_group_id
+  vpc_security_group_ids = aws_security_group.security-group.id
   key_name               = "jadhav_cred"
   subnet_id              = module.vpc.public_subnets
   root_block_device = [
@@ -24,26 +24,25 @@ module "ec2_instance" {
 }
 
 
-module "vote_service_sg" {
-  source = "terraform-aws-modules/security-group/aws"
-
+resource "aws_security_group" "security-group" {
+  
   description = "Allowing Jenkins, Sonarqube, SSH Access"
 
-  ingress_rules = [
-    for port in [22, 443, 8080, 9000, 9090, 80] : {
+  ingress = [
+    for port in [22,443 , 8080, 9000, 9090, 80] : {
+      description      = "TLS from VPC"
       from_port        = port
       to_port          = port
       protocol         = "tcp"
-      cidr_blocks      = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = []
+      ipv6_cidr_blocks = ["::/0"]
+      self             = false
       prefix_list_ids  = []
       security_groups  = []
-      self             = false
-      #   description      = "${upper(regex_replace("Access", "", element(["SSH", "HTTPS", "Jenkins", "Sonarqube", "Prometheus", "HTTP"], port / 100)))} Access"
+      cidr_blocks      = ["0.0.0.0/0"]
     }
   ]
 
-  egress_rules = {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
