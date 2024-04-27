@@ -9,9 +9,11 @@ module "ec2_instance" {
   vpc_security_group_ids = module.vote_service_sg.security_group_id
   key_name = "jadhav_cred"
   subnet_id              = module.vpc.public_subnets
-  root_block_device = {
-    volume_size = 30
-  }
+ root_block_device = [
+    {
+      volume_size = 30
+    }
+  ]
 
   user_data = templatefile("./script.sh", {})
 
@@ -37,7 +39,7 @@ module "vote_service_sg" {
       prefix_list_ids  = []
       security_groups  = []
       self             = false
-      description      = "${upper(regex_replace("Access", "", element(["SSH", "HTTPS", "Jenkins", "Sonarqube", "Prometheus", "HTTP"], port / 100)))} Access"
+    #   description      = "${upper(regex_replace("Access", "", element(["SSH", "HTTPS", "Jenkins", "Sonarqube", "Prometheus", "HTTP"], port / 100)))} Access"
     }
   ]
 
