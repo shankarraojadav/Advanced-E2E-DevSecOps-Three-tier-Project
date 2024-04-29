@@ -25,7 +25,7 @@ spec:
       - name: ecr-registry-secret
       containers:
       - name: frontend
-        image: null
+        image: ghcr.io/shankarraojadav/Advanced-E2E-DevSecOps-Three-tier-Project:latest
         imagePullPolicy: Always
         env:
           - name: REACT_APP_BACKEND_URL
